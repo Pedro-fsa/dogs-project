@@ -1,13 +1,10 @@
-import { HttpService } from '@nestjs/axios';
-import { AxiosResponse } from 'axios'
 import { Controller, Get } from '@nestjs/common';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
-import { DogBreedsResponse } from 'src/core/dto/dogs/GetDogBreedsResponse.dto';
+import { GetAllBreeds } from 'src/core/use_cases/dogs/getAllBreeds';
+
 
 @Controller('dogs')
 export class DogsController {
-    constructor(private httpService: HttpService) {}
+    constructor(private getAllBreeds: GetAllBreeds) {}
 
     @Get()
     getAll() {
@@ -15,13 +12,7 @@ export class DogsController {
     }
 
     @Get('/breeds')
-    getBreeds(): Observable<AxiosResponse<DogBreedsResponse>> {
-        return this.httpService.get('https://dog.ceo/api/breeds/list/all', {
-            headers: {
-                'Accept': 'application/json'
-            }
-        }).pipe(
-            map(response => response.data),
-        );
+    getallBreeds() {
+        return this.getAllBreeds.call()
     }
 }
