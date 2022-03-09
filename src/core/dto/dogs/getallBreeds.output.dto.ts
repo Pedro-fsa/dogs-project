@@ -6,6 +6,6 @@ export class GetAllBreedsOutputDto {
     
     @ApiProperty({ description: 'List of all the available dog breeds' })
     message: {
-        [breed: string]: string
+        [breed: string]: string[]
     }
 }

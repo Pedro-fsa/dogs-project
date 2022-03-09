@@ -4,18 +4,17 @@ import { AxiosResponse } from 'axios';
 import { Observable } from 'rxjs';
 import { DogBreedsResponse } from './getAllBreeds.interface';
 import { Injectable } from '@nestjs/common';
+import { DogsAPIClient } from '../../../services/dogs.client' 
+import { GetAllBreedsOutputDto } from 'src/core/dto/dogs/getallBreeds.output.dto';
+
 
 @Injectable()
 export class GetAllBreeds {
-    constructor(private httpService: HttpService) {}
+    constructor(private readonly dogsAPIClient: DogsAPIClient) {}
 
-    async call(): Promise<Observable<AxiosResponse<DogBreedsResponse>>> {
-        return await this.httpService.get('https://dog.ceo/api/breeds/list/all', {
-            headers: {
-                'Accept': 'application/json'
-            }
-        }).pipe(
-            map(response => response.data),
-        );
+    async call(): Promise<GetAllBreedsOutputDto> {
+        const uri = 'breeds/list/all';
+        const res: GetAllBreedsOutputDto = await this.dogsAPIClient.get(uri);
+        return res
     }
 }

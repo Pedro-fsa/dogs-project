@@ -1,4 +1,4 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, HttpCode, HttpStatus } from '@nestjs/common';
 import {
     ApiOkResponse,
     ApiOperation,
@@ -11,7 +11,7 @@ import { GetAllBreedsOutputDto } from '../../core/dto/dogs/getallBreeds.output.d
 @ApiTags('dogs')
 @Controller('dogs')
 export class DogsController {
-    constructor(private getAllBreeds: GetAllBreeds) {}
+    constructor(private readonly getAllBreeds: GetAllBreeds) {}
 
     @Get()
     getAll() {
@@ -26,7 +26,8 @@ export class DogsController {
         description: 'Successful operation',
         type: GetAllBreedsOutputDto
     })
-    getallBreeds() {
+    @HttpCode(HttpStatus.OK)
+    getallBreeds(): Promise<GetAllBreedsOutputDto> {
         return this.getAllBreeds.call()
     }
 }
