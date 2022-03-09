@@ -1,6 +1,5 @@
 import { Injectable } from "@nestjs/common";
 import Axios from 'axios';
-import { GetAllBreedsOutputDto } from "src/core/dto/dogs/getallBreeds.output.dto";
 import { DogBreedsResponse } from '../core/use_cases/dogs/getAllBreeds.interface'
 
 @Injectable()
