@@ -1,12 +1,8 @@
-import { HttpService } from '@nestjs/axios';
-import { map } from 'rxjs/operators';
-import { AxiosResponse } from 'axios';
-import { Observable } from 'rxjs';
-import { DogBreedsResponse } from './getAllBreeds.interface';
 import { Injectable } from '@nestjs/common';
 import { DogsAPIClient } from '../../../services/dogs.client' 
 import { GetAllBreedsOutputDto } from 'src/core/dto/dogs/getallBreeds.output.dto';
-
+import { DogBreedsResponse } from './getAllBreeds.interface'
+const SUCCESS = 'success'
 
 @Injectable()
 export class GetAllBreeds {
@@ -14,7 +10,25 @@ export class GetAllBreeds {
 
     async call(): Promise<GetAllBreedsOutputDto> {
         const uri = 'breeds/list/all';
-        const res: GetAllBreedsOutputDto = await this.dogsAPIClient.get(uri);
-        return res
+        const res: DogBreedsResponse = await this.dogsAPIClient.get(uri);
+        
+        // TODO: Check if successful
+        
+        const allBreeds = []
+        if (res.status === SUCCESS) {
+            Object.keys(res.message).forEach(breed => {
+                allBreeds.push(breed);
+                if (res.message[breed].length) {
+                    res.message[breed].forEach(subBreed => {
+                        allBreeds.push(`${subBreed} ${breed}`);
+                    })
+                }
+            })
+        }
+        const result: GetAllBreedsOutputDto = {
+            breeds: allBreeds,
+            total: allBreeds.length
+        }
+        return result;
     }
 }

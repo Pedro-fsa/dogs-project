@@ -2,8 +2,7 @@ import { Controller, Get, HttpCode, HttpStatus } from '@nestjs/common';
 import {
     ApiOkResponse,
     ApiOperation,
-    ApiTags,
-    ApiBadRequestResponse,
+    ApiTags
   } from '@nestjs/swagger';
 import { GetAllBreeds } from 'src/core/use_cases/dogs/get.breeds';
 import { GetAllBreedsOutputDto } from '../../core/dto/dogs/getallBreeds.output.dto'
