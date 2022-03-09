@@ -9,8 +9,8 @@ import { Injectable } from '@nestjs/common';
 export class GetAllBreeds {
     constructor(private httpService: HttpService) {}
 
-    call(): Observable<AxiosResponse<DogBreedsResponse>> {
-        return this.httpService.get('https://dog.ceo/api/breeds/list/all', {
+    async call(): Promise<Observable<AxiosResponse<DogBreedsResponse>>> {
+        return await this.httpService.get('https://dog.ceo/api/breeds/list/all', {
             headers: {
                 'Accept': 'application/json'
             }
