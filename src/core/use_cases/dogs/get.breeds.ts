@@ -5,9 +5,12 @@ import { DogsService } from 'src/services/dogs.service';
 
 @Injectable()
 export class GetAllBreeds {
-    constructor(private readonly dogsService: DogsService) {}
+    public constructor(private readonly dogsService: DogsService) {}
 
-    async call(): Promise<GetAllBreedsOutputDto> {
-        return this.dogsService.getAllBreeds()
+    async call(): Promise<any> {
+        const dogList = await this.dogsService.getAllBreeds()
+        const result: GetAllBreedsOutputDto = new GetAllBreedsOutputDto(dogList);
+        console.log(result)
+        return result.getOutput();
     }
 }
