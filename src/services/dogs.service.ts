@@ -9,8 +9,12 @@ export class DogsService {
     private SUCCESS = 'success'
 
     async getAllBreeds(): Promise<Dog[]> {
-        const uri = 'breeds/list/all';
+        const uri = 'breeds/list/allasd';
         const res: DogBreedsResponse = await this.dogsAPIClient.get(uri);
+        
+        if (!res) {
+            throw new HttpException('Failed to connect to Dogs API', HttpStatus.NOT_FOUND);
+        }
         const { status, message } = res;
 
         if (status === this.SUCCESS) {
