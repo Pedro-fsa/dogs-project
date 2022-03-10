@@ -1,6 +1,4 @@
-import { HttpService } from "@nestjs/axios";
 import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
-import { GetAllBreedsOutputDto } from "src/core/dto/dogs/getallBreeds.output.dto";
 import { Dog } from "src/core/entities/dog.entity";
 import { DogBreedsResponse } from "src/core/use_cases/dogs/getAllBreeds.interface";
 import { DogsAPIClient } from "./dogs.client";
@@ -14,7 +12,7 @@ export class DogsService {
         const uri = 'breeds/list/all';
         const res: DogBreedsResponse = await this.dogsAPIClient.get(uri);
         const { status, message } = res;
-        
+
         if (status === this.SUCCESS) {
             const allDogs = Object.keys(message).map(breedName => {
                 if (!message[breedName]?.length) {
