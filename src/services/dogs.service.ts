@@ -1,4 +1,5 @@
-import { Injectable } from "@nestjs/common";
+import { HttpService } from "@nestjs/axios";
+import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
 import { GetAllBreedsOutputDto } from "src/core/dto/dogs/getallBreeds.output.dto";
 import { Dog } from "src/core/entities/dog.entity";
 import { DogBreedsResponse } from "src/core/use_cases/dogs/getAllBreeds.interface";
@@ -12,22 +13,22 @@ export class DogsService {
     async getAllBreeds(): Promise<Dog[]> {
         const uri = 'breeds/list/all';
         const res: DogBreedsResponse = await this.dogsAPIClient.get(uri);
+        const { status, message } = res;
         
-        // TODO: Check if successful
-        
-        const allDogs = []
-        if (res.status === this.SUCCESS) {
-            Object.keys(res.message).forEach(breed => {
-                let newDog = new Dog(breed);
-                allDogs.push(newDog);
-                if (res.message[breed].length) {
-                    res.message[breed].forEach(subBreed => {
-                        let newDog = new Dog(`${subBreed} ${breed}`);
-                        allDogs.push(newDog);
+        if (status === this.SUCCESS) {
+            const allDogs = Object.keys(message).map(breedName => {
+                if (!message[breedName]?.length) {
+                    return new Dog(breedName);
+                } else {
+                    return message[breedName].map(subBreed => {
+                        return new Dog(`${subBreed} ${breedName}`)
                     })
                 }
             })
+            console.log(allDogs.flat())
+            return allDogs.flat();
+        } else {
+            throw new HttpException('Bad data received from Dogs service', HttpStatus.BAD_REQUEST);
         }
-        return allDogs;
     }
 }

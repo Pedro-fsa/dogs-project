@@ -26,7 +26,7 @@ export class DogsController {
         type: GetAllBreedsOutputDto
     })
     @HttpCode(HttpStatus.OK)
-    getallBreeds(): Promise<GetAllBreedsOutputDto> {
+    getallBreeds(): Promise<Partial<GetAllBreedsOutputDto>> {
         return this.getAllBreeds.call()
     }
 }

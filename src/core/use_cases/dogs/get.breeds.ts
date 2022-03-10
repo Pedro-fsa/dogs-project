@@ -7,10 +7,9 @@ import { DogsService } from 'src/services/dogs.service';
 export class GetAllBreeds {
     public constructor(private readonly dogsService: DogsService) {}
 
-    async call(): Promise<any> {
+    async call(): Promise<Partial<GetAllBreedsOutputDto>> {
         const dogList = await this.dogsService.getAllBreeds()
         const result: GetAllBreedsOutputDto = new GetAllBreedsOutputDto(dogList);
-        console.log(result)
         return result.getOutput();
     }
 }
